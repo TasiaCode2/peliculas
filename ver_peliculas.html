@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Listado Películas</title>
+  </head>
+
+  <body background="imgs/seven_lista.jpg">
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-database.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCxJAH4JGy2-ty5nKdNzIW41J8QFQOdJlk",
+        authDomain: "videoclub-897d4.firebaseapp.com",
+        databaseURL: "https://videoclub-897d4.firebaseio.com",
+        projectId: "videoclub-897d4",
+        storageBucket: "videoclub-897d4.appspot.com",
+        messagingSenderId: "1034949088355",
+        appId: "1:1034949088355:web:c67ed988cb5fb0ff215456"
+      };
+    
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      var refDB = firebase.database().ref().child('peliculas');
+      var peliculas={};
+
+      refDB.on('value',function(datos){
+        $("tbody").children().remove();
+        peliculas=datos.val();
+        
+        $.each(peliculas, function(indice,valor){
+          var tBody = document.getElementById('dataTable').lastElementChild;
+          var tr1 = document.createElement('tr');
+          tBody.appendChild(tr1);
+          var prevPelicula='<td>'+valor.nombre+'</td>';
+          prevPelicula+='<td>'+valor.anio+'</td>';
+          prevPelicula+='<td>'+valor.genero+'</td>';
+          prevPelicula+='<td>'+valor.director+'</td>';
+          prevPelicula+='<td><button type="button" class="btn btn-warning" onclick="editar(\''+indice+'\')">Editar</button></td>';
+          prevPelicula+='<td><button type="button" class="btn btn-danger" onclick="borrar(\''+indice+'\')">Borrar</button></td>';
+          $(prevPelicula).appendTo(tr1);
+        });
+      },function(objetoError){
+        console.log('Error de lectura:'+objetoError.code);
+      });
+
+      function editar(id){
+        // Para pasar el ID a otro proceso lo hacemos a través de window.name
+        window.name= id;
+
+        // Cargamos la página editarproducto.html
+        location.assign('editar_pelicula.html');
+      }
+
+      function borrar(id){
+        if(confirm("¿Seguro que desea borrar la película?")==true){
+          refDB.child(id).remove();
+        }
+      }
+    </script>
+
+    <div  id="listado" >
+      <div style="padding-left: 40px;">
+        <div style="color: white; padding-left: 120px; font-size: 120px;">
+          <div style="padding-top: 40px;">Películas</br> Disponibles</div>
+        </div>
+
+        <table id="dataTable" border="1px" border-color="#000" width="800px" style="background-color: whitesmoke;">
+          <thead style="background-color:firebrick; color: white;">
+            <th>Nombre</th><th>Año</th><th>Género</th><th>Director</th><th colspan="2">Acciones</th>
+          </thead>
+
+          <tbody></tbody>
+        </table>
+
+        </br>
+        <div style="padding-left: 335px;">
+          <input style="background-color: firebrick; color: whitesmoke; border: none; font-size: 20px; padding: 10px;" type="button" onclick="location.href='nueva_pelicula.html';" value="Agregar pelicula"/>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

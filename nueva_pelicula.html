@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nueva pelicula</title>
+    </head>
+
+    <body background="imgs/donnie-darko.jpg">
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-database.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCxJAH4JGy2-ty5nKdNzIW41J8QFQOdJlk",
+            authDomain: "videoclub-897d4.firebaseapp.com",
+            databaseURL: "https://videoclub-897d4.firebaseio.com",
+            projectId: "videoclub-897d4",
+            storageBucket: "videoclub-897d4.appspot.com",
+            messagingSenderId: "1034949088355",
+            appId: "1:1034949088355:web:c67ed988cb5fb0ff215456"
+         };
+         // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        //push crea el nuevo, generando su clave primaria
+        var dataDB = firebase.database().ref('peliculas').push(); 
+
+        function enviar(){
+            //id de los inputs
+            var nombre = document.getElementById('nombre');
+            var genero = document.getElementById('genero');
+            var anio = document.getElementById('anio');
+            var director = document.getElementById('director');
+        
+            dataDB.set({
+                nombre: nombre.value,
+                genero: genero.value,
+                anio: anio.value,
+                director: director.value
+            }).then(function() {
+                alert("Todo bien");
+                location.replace('ver_peliculas.html');
+            })
+            .catch(function(error) {
+                console.log('detectado un error', error);
+            });
+        }
+        
+        </script>
+
+        <!-- Creando el formulario -->
+        <div style="width: 70%;  padding-top: 50px;">
+            <CENTER>
+                <div style="color: floralwhite; font-size: 100px;">Agregar nueva película</div>
+
+                </br>
+                </br>
+                <form action="" method="post" style="width: 320px; border:dotted; padding: 10px;">
+                    <input type="text" name="nombre" id="nombre" placeholder="Titulo" required style="font-size: 25px;"></br>
+                    <input type="text" name="genero" id="genero" placeholder="Genero" required style="font-size: 25px;"></br>
+                    <input type="number" name="anio" id="anio" placeholder="Anio" required style="font-size: 25px;"></br>
+                    <input type="text" name="director" id="director" placeholder="Director" required style="font-size: 25px;"></br>
+                    
+                    </br>
+                    <button style="background-color: firebrick; color: whitesmoke; border: none; font-size: 30px; padding: 10px;" id="submit_button" type="submit" onclick="enviar()">Guardar</button>
+                    
+                    <div style="padding-top: 10px;">
+                        <input style="background-color:whitesmoke; color: firebrick; border: none; font-size: 15px; padding: 10px;" type="button" onclick="location.href='ver_peliculas.html';" value="Regresar"/>
+                    </div>
+                </form>
+            </CENTER>
+        </div>
+    </body>
+</html>

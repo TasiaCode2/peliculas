@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Editar pelicula</title>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<!--<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script> -->
+</head>
+    <body background="imgs/arrival_aro.jpg">
+        <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-database.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyCxJAH4JGy2-ty5nKdNzIW41J8QFQOdJlk",
+                authDomain: "videoclub-897d4.firebaseapp.com",
+                databaseURL: "https://videoclub-897d4.firebaseio.com",
+                projectId: "videoclub-897d4",
+                storageBucket: "videoclub-897d4.appspot.com",
+                messagingSenderId: "1034949088355",
+                appId: "1:1034949088355:web:c67ed988cb5fb0ff215456"
+            };
+
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            // Se conecta con la base de datos de Firebase
+            var dataDB = firebase.database().ref('peliculas');
+            var peliId= window.name;
+            var nombre, genero, anio, director;
+            var pelicula={};
+
+            // Buscamos el artículo.
+            dataDB.child(peliId).once('value',function(datos)
+            {
+                pelicula=datos.val();
+                nombre = pelicula.nombre;
+                genero = pelicula.genero;
+                anio = pelicula.anio;
+                director = pelicula.director;
+
+                $('#nombre').val(nombre);
+                $('#genero').val(genero);
+                $('#anio').val(anio);
+                $('#director').val(director);
+            });
+            
+            function actualizar() {
+            // Se asigna a una variable cada elemento input con su ID
+                var nombre = document.getElementById('nombre');
+                var anio = document.getElementById('anio');
+                var genero = document.getElementById('genero');
+                var director = document.getElementById('director');
+
+                dataDB.child(peliId).update({
+                        nombre: nombre.value,
+                        anio: anio.value,
+                        genero: genero.value,
+                        director: director.value
+                    });
+
+                alert('Pelicula actualizada exitosamente');
+                window.location.href = "./ver_peliculas.html";
+            }
+        </script>
+        
+        <div style="width: 70%;  padding-top: 50px;">
+            <CENTER>
+                <div style="color: black; font-size: 125px;">
+                    <div style="padding-top: 40px;">Actualizar</br>datos</div>
+                </div>
+
+                <form action="" method="post">
+                    <input id="nombre" class="input" type="text" value="" placeholder="Nombre" required style="font-size: 25px;"/><br />
+                    <input id="anio" class="input" type="number" value="" placeholder="Anio" required style="font-size: 25px;"/><br />
+                    <input id="genero" class="input" type="text" value="" placeholder="Genero" required style="font-size: 25px;"/><br />
+                    <input id="director" class="input" type="text" value="" placeholder="Director" required style="font-size: 25px;"/><br />
+                    
+                    <br>
+                    <button style="background-color:black; color:white; border: none; font-size: 30px; padding: 10px;" id="submit_button" type="submit" onclick="actualizar()">Actualizar</button>
+                    <br>
+                    <input style="background-color:white; color: black; border: none; font-size: 15px; padding: 10px;"type="button" onclick="location.href='ver_peliculas.html';" value="Regresar"/>
+                </form>
+            </CENTER>
+        </div>
+    </body>
+</html>
