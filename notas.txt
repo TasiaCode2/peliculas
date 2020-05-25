@@ -1,0 +1,11 @@
+Profe, sólo quería comentarle, estuve haciendo pruebas con lo del
+cambio de archivo después de actualizar o crear una película.
+
+En nueva_pelicula, dentro de la función enviar, traté el dataDB.set como
+una promesa y agregué required a cada campo a rellenar del formulario.
+
+Si rellena todos los datos y crea la película, no pasa nada. Si deja algún
+campo sin rellenar, es entonces que corre lo que hay dentro del "then" y ya
+cambia de página.
+
+Se lo comento porque la verdad, no entiendo qué está pasando.
